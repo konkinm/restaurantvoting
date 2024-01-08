@@ -50,6 +50,6 @@ public class Dish extends BaseEntity implements HasId {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    @JsonView(View.DishInfo.class)
+    @JsonView(View.RestaurantInfo.class)
     private Restaurant restaurant;
 }

@@ -23,6 +23,6 @@ public class Restaurant extends NamedEntity implements HasId {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("price DESC")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    @JsonView(View.RestaurantInfo.class)
+    @JsonView(View.DishInfo.class)
     private List<Dish> dishes;
 }

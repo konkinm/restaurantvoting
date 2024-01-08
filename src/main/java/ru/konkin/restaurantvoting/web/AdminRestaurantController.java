@@ -44,13 +44,14 @@ public class AdminRestaurantController {
     }
 
     @GetMapping("/{id}/with-dishes")
-    @JsonView(View.RestaurantInfo.class)
+    @JsonView(View.DishInfo.class)
     public Restaurant getWithDishes(@PathVariable int id) {
         log.info("get {} with dishes", id);
         return repository.getExistedWithDishes(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(View.BasicInfo.class)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
         log.info("create {}", restaurant);
         checkNew(restaurant);
@@ -63,6 +64,7 @@ public class AdminRestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @JsonView(View.BasicInfo.class)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         log.info("update {} with id={}", restaurant, id);
         assureIdConsistent(restaurant, id);

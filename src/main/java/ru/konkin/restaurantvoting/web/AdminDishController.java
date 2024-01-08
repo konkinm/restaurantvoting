@@ -43,7 +43,7 @@ public class AdminDishController {
     }
 
     @GetMapping("/{id}/with-restaurant")
-    @JsonView(View.DishInfo.class)
+    @JsonView(View.RestaurantInfo.class)
     public Dish getWithRestaurant(@PathVariable int id) {
         log.info("get {} with restaurant", id);
         return repository.getExistedWithRestaurant(id);
