@@ -1,7 +1,7 @@
 package ru.konkin.restaurantvoting.web;
 
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -15,15 +15,13 @@ import ru.konkin.restaurantvoting.repository.RestaurantRepository;
 import java.net.URI;
 import java.util.List;
 
-import static org.slf4j.LoggerFactory.getLogger;
 import static ru.konkin.restaurantvoting.web.RestValidation.assureIdConsistent;
 import static ru.konkin.restaurantvoting.web.RestValidation.checkNew;
 
 @RestController
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 public class AdminRestaurantController {
-    private final Logger log = getLogger(getClass());
-
     static final String REST_URL = "api/admin/restaurant";
 
     @Autowired
@@ -44,7 +42,7 @@ public class AdminRestaurantController {
     @GetMapping("/{id}/with-dishes")
     public Restaurant getWithDishes(@PathVariable int id) {
         log.info("get {} with dishes", id);
-        return repository.getWithDishes(id);
+        return repository.getExistedWithDishes(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -70,6 +68,6 @@ public class AdminRestaurantController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
-        repository.delete(id);
+        repository.deleteExisted(id);
     }
 }
