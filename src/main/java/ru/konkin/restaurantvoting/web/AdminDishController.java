@@ -12,6 +12,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.model.Dish;
 import ru.konkin.restaurantvoting.repository.DishRepository;
+import ru.konkin.restaurantvoting.repository.RestaurantRepository;
+import ru.konkin.restaurantvoting.to.DishTo;
 
 import java.net.URI;
 import java.util.List;
@@ -26,34 +28,40 @@ public class AdminDishController {
     static final String REST_URL = "api/admin/dish";
 
     @Autowired
-    private DishRepository repository;
+    private DishRepository dishRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @GetMapping
     @JsonView(View.BasicInfo.class)
     public List<Dish> getAll() {
         log.info("get all");
-        return repository.findAll();
+        return dishRepository.findAll();
     }
 
     @GetMapping("/{id}")
     @JsonView(View.BasicInfo.class)
     public Dish get(@PathVariable int id) {
         log.info("get {}", id);
-        return repository.getExisted(id);
+        return dishRepository.getExisted(id);
     }
 
     @GetMapping("/{id}/with-restaurant")
     @JsonView(View.RestaurantInfo.class)
     public Dish getWithRestaurant(@PathVariable int id) {
         log.info("get {} with restaurant", id);
-        return repository.getExistedWithRestaurant(id);
+        return dishRepository.getExistedWithRestaurant(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish) {
-        log.info("create {}", dish);
-        checkNew(dish);
-        Dish created = repository.save(dish);
+    @JsonView(View.BasicInfo.class)
+    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody DishTo dishTo) {
+        log.info("create {}", dishTo);
+        checkNew(dishTo);
+        Dish fromTo = new Dish(dishTo.getDescription(), dishTo.getPrice());
+        fromTo.setRestaurant(restaurantRepository.getExisted(dishTo.getRestaurantId()));
+        Dish created = dishRepository.save(fromTo);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -62,16 +70,20 @@ public class AdminDishController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Dish dish, @PathVariable int id) {
-        log.info("update {} with id={}", dish, id);
-        assureIdConsistent(dish, id);
-        repository.save(dish);
+    @JsonView(View.BasicInfo.class)
+    public void update(@Valid @RequestBody DishTo dishTo, @PathVariable int id) {
+        log.info("update {} with id={}", dishTo, id);
+        assureIdConsistent(dishTo, id);
+        Dish fromTo = new Dish(dishTo.getDescription(), dishTo.getPrice());
+        fromTo.setId(id);
+        fromTo.setRestaurant(restaurantRepository.getExisted(dishTo.getRestaurantId()));
+        dishRepository.save(fromTo);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
-        repository.deleteExisted(id);
+        dishRepository.deleteExisted(id);
     }
 }

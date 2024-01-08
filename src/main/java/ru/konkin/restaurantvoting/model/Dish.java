@@ -52,4 +52,14 @@ public class Dish extends BaseEntity implements HasId {
     @NotNull
     @JsonView(View.RestaurantInfo.class)
     private Restaurant restaurant;
+
+    public Dish(String description, int price, LocalDate date) {
+        this.description = description;
+        this.price = price;
+        this.date = date;
+    }
+
+    public Dish(String description, int price) {
+        this(description, price, LocalDate.now());
+    }
 }
