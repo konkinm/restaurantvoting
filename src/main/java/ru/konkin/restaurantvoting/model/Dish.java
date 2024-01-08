@@ -18,7 +18,7 @@ import ru.konkin.restaurantvoting.HasId;
 import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.validation.NoHtml;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "dish")
@@ -39,18 +39,17 @@ public class Dish extends BaseEntity implements HasId {
     @JsonView(View.BasicInfo.class)
     private int price;
 
-    @Column(name = "date_time", nullable = false, columnDefinition = "timestamp default now()")
+    @Column(name = "date", nullable = false, columnDefinition = "date default curdate()")
     @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonView(View.BasicInfo.class)
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dateTime;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonIgnore
-    @JsonView(View.DishInfo.class)
     @NotNull
+    @JsonView(View.DishInfo.class)
     private Restaurant restaurant;
 }
