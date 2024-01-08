@@ -1,5 +1,6 @@
 package ru.konkin.restaurantvoting.web;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.model.Restaurant;
 import ru.konkin.restaurantvoting.repository.RestaurantRepository;
 
@@ -28,18 +30,21 @@ public class AdminRestaurantController {
     private RestaurantRepository repository;
 
     @GetMapping
+    @JsonView(View.BasicInfo.class)
     public List<Restaurant> getAll() {
         log.info("get all");
         return repository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @GetMapping("/{id}")
+    @JsonView(View.BasicInfo.class)
     public Restaurant get(@PathVariable int id) {
         log.info("get {}", id);
         return repository.getExisted(id);
     }
 
     @GetMapping("/{id}/with-dishes")
+    @JsonView(View.RestaurantInfo.class)
     public Restaurant getWithDishes(@PathVariable int id) {
         log.info("get {} with dishes", id);
         return repository.getExistedWithDishes(id);

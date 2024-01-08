@@ -1,5 +1,6 @@
 package ru.konkin.restaurantvoting.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.validation.NoHtml;
 
 
@@ -21,6 +23,7 @@ public abstract class NamedEntity extends BaseEntity {
     @Size(min = 2, max = 128)
     @Column(name = "name", nullable = false)
     @NoHtml
+    @JsonView(View.BasicInfo.class)
     protected String name;
 
     protected NamedEntity(Integer id, String name) {
