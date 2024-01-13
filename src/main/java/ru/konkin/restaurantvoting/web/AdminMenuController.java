@@ -38,7 +38,7 @@ public class AdminMenuController {
     @JsonView(View.BasicInfo.class)
     public List<Dish> getAll(@PathVariable int restaurantId) {
         log.info("get today menu for restaurant with id={}", restaurantId);
-        assureEntityExists(restaurantRepository.existsById(restaurantId), restaurantId);
+        checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);
         return dishRepository.getTodayMenu(restaurantId);
     }
 

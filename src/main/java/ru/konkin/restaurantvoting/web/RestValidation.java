@@ -3,6 +3,7 @@ package ru.konkin.restaurantvoting.web;
 import lombok.experimental.UtilityClass;
 import ru.konkin.restaurantvoting.HasId;
 import ru.konkin.restaurantvoting.error.IllegalRequestDataException;
+import ru.konkin.restaurantvoting.error.NotFoundException;
 
 @UtilityClass
 public class RestValidation {
@@ -19,6 +20,12 @@ public class RestValidation {
             bean.setId(id);
         } else if (bean.id() != id) {
             throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must has id=" + id);
+        }
+    }
+
+    public static void checkNotFoundWithId(boolean found, int id) {
+        if (!found) {
+            throw new NotFoundException("Entity with id=" + id + " not found");
         }
     }
 }
