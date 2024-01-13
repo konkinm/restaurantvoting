@@ -27,4 +27,11 @@ public class Restaurant extends NamedEntity implements HasId {
     private List<Dish> dishes;
     @JsonView(View.MenuInfo.class)
     private List<Dish> menu;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @Column(name = "vote")
+    @OrderBy("voteDate DESC")
+    @JsonView(View.VoteInfo.class)
+    @Schema(hidden = true)
+    private Set<Vote> votes;
 }

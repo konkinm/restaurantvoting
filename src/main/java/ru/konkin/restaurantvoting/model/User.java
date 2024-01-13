@@ -1,6 +1,8 @@
 package ru.konkin.restaurantvoting.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,8 +12,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.NonNull;
 import ru.konkin.restaurantvoting.HasIdAndEmail;
+import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.validation.NoHtml;
 
 import java.util.*;
@@ -53,6 +58,14 @@ public class User extends NamedEntity implements HasIdAndEmail {
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles = EnumSet.noneOf(Role.class);
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Column(name = "vote")
+    @OrderBy("voteDate DESC")
+    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
+    @JsonView(View.VoteInfo.class)
+    @Schema(hidden = true)
+    private Set<Vote> votes;
 
     public User(User u) {
         this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles);
