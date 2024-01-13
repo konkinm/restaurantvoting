@@ -1,9 +1,8 @@
-package ru.konkin.restaurantvoting.web;
+package ru.konkin.restaurantvoting.web.admin;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,43 +10,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.model.Dish;
-import ru.konkin.restaurantvoting.repository.DishRepository;
-import ru.konkin.restaurantvoting.repository.RestaurantRepository;
 import ru.konkin.restaurantvoting.to.DishTo;
+import ru.konkin.restaurantvoting.web.user.MenuController;
 
 import java.net.URI;
-import java.util.List;
 
 import static ru.konkin.restaurantvoting.util.DishUtil.checkDishBelongsToRestaurant;
 import static ru.konkin.restaurantvoting.util.DishUtil.fromTo;
-import static ru.konkin.restaurantvoting.web.RestValidation.*;
+import static ru.konkin.restaurantvoting.web.RestValidation.assureIdConsistent;
+import static ru.konkin.restaurantvoting.web.RestValidation.checkNew;
 
 @RestController
 @RequestMapping(value = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-public class AdminMenuController {
+public class AdminMenuController extends MenuController {
     static final String REST_URL = "api/admin/restaurants";
-
-    @Autowired
-    private DishRepository dishRepository;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @GetMapping("/{restaurantId}/menu")
-    @JsonView(View.BasicInfo.class)
-    public List<Dish> getAll(@PathVariable int restaurantId) {
-        log.info("get today menu for restaurant with id={}", restaurantId);
-        checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);
-        return dishRepository.getTodayMenu(restaurantId);
-    }
-
-    @GetMapping("/{restaurantId}/menu/{id}")
-    @JsonView(View.BasicInfo.class)
-    public Dish get(@PathVariable("id") int id, @PathVariable("restaurantId") int restaurantId) {
-        log.info("get {} for {}", id, restaurantId);
-        return dishRepository.getExistedRestaurantDish(id, restaurantId);
-    }
 
     @PostMapping(path = "/{restaurantId}/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
     @JsonView(View.BasicInfo.class)
