@@ -1,7 +1,9 @@
 package ru.konkin.restaurantvoting.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +23,8 @@ import ru.konkin.restaurantvoting.validation.NoHtml;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "dish")
+@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames =
+        {"description", "restaurant_id", "local_date"}, name = "dish_unique_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -50,7 +53,9 @@ public class Dish extends BaseEntity implements HasId {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
+    @JsonBackReference
     @JsonView(View.RestaurantInfo.class)
+    @Schema(hidden = true)
     private Restaurant restaurant;
 
     public Dish(String description, int price, LocalDate localDate) {

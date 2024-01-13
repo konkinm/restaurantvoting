@@ -17,3 +17,8 @@ VALUES ('Khachapuri', 500, 2),
        ('Adjapsandali', 1800, 1),
        ('Hinkali', 1500, 2),
        ('Pkhali', 1600, 1);
+INSERT INTO DISH (description, price, local_date, restaurant_id)
+VALUES ('Khachapuri', 500, curdate(), 2),
+       ('Adjapsandali', 1800, curdate(), 1),
+       ('Hinkali', 1500, '2024-01-11', 2),
+       ('Pkhali', 1600, '2024-01-11', 1);

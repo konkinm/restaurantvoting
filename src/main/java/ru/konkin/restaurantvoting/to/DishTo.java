@@ -20,13 +20,11 @@ public class DishTo extends BaseTo {
     @NoHtml
     private String description;
 
+    @NotNull
     @Range(min = 0, max = 1000000)
-    private int price;
+    private Integer price;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate date;
-
-    @NotNull
-    private int restaurantId;
 }
