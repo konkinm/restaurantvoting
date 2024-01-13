@@ -39,12 +39,12 @@ public class Dish extends BaseEntity implements HasId {
     @JsonView(View.BasicInfo.class)
     private int price;
 
-    @Column(name = "date", nullable = false, columnDefinition = "date default curdate()")
+    @Column(name = "local_date", nullable = false, columnDefinition = "date default curdate()")
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonView(View.BasicInfo.class)
     @JsonFormat(pattern="yyyy-MM-dd")
-    private LocalDate date;
+    private LocalDate localDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -53,10 +53,10 @@ public class Dish extends BaseEntity implements HasId {
     @JsonView(View.RestaurantInfo.class)
     private Restaurant restaurant;
 
-    public Dish(String description, int price, LocalDate date) {
+    public Dish(String description, int price, LocalDate localDate) {
         this.description = description;
         this.price = price;
-        this.date = date;
+        this.localDate = localDate;
     }
 
     public Dish(String description, int price) {

@@ -7,7 +7,7 @@ public class View {
 
     public static class RestaurantInfo extends BasicInfo{}
 
-    public static class DishInfo extends BasicInfo {}
+    public static class MenuInfo extends BasicInfo {}
 
     public static class RestaurantInfo extends BasicInfo {}
 }

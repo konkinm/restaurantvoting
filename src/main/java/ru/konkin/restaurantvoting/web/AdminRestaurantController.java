@@ -24,7 +24,7 @@ import static ru.konkin.restaurantvoting.web.RestValidation.checkNew;
 @RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class AdminRestaurantController {
-    static final String REST_URL = "api/admin/restaurant";
+    static final String REST_URL = "api/admin/restaurants";
 
     @Autowired
     private RestaurantRepository repository;
@@ -43,11 +43,11 @@ public class AdminRestaurantController {
         return repository.getExisted(id);
     }
 
-    @GetMapping("/{id}/with-dishes")
-    @JsonView(View.DishInfo.class)
-    public Restaurant getWithDishes(@PathVariable int id) {
-        log.info("get {} with dishes", id);
-        return repository.getExistedWithDishes(id);
+    @GetMapping("/{id}/with-menu")
+    @JsonView(View.MenuInfo.class)
+    public Restaurant getWithMenu(@PathVariable int id) {
+        log.info("get {} with menu", id);
+        return repository.getExistedWithMenu(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
