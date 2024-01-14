@@ -23,6 +23,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.konkin.restaurantvoting.error.*;
 
@@ -56,6 +57,7 @@ public class RestExceptionHandler {
             put(UnsupportedOperationException.class, ErrorType.APP_ERROR);
             put(EntityNotFoundException.class, ErrorType.DATA_CONFLICT);
             put(DataIntegrityViolationException.class, ErrorType.DATA_CONFLICT);
+            put(MethodArgumentTypeMismatchException.class, ErrorType.BAD_REQUEST);
             put(IllegalArgumentException.class, ErrorType.BAD_DATA);
             put(ValidationException.class, ErrorType.BAD_REQUEST);
             put(HttpRequestMethodNotSupportedException.class, ErrorType.BAD_REQUEST);
