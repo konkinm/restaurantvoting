@@ -5,9 +5,5 @@ public class View {
 
     public static class BasicInfo extends IdOnly {}
 
-    public static class RestaurantInfo extends BasicInfo {}
-
-    public static class MenuInfo extends BasicInfo {}
-
-    public static class VoteInfo extends BasicInfo {}
+    public static class AdditionalInfo extends BasicInfo {}
 }

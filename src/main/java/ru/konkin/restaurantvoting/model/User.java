@@ -63,7 +63,7 @@ public class User extends NamedEntity implements HasIdAndEmail {
     @Column(name = "vote")
     @OrderBy("voteDate DESC")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    @JsonView(View.VoteInfo.class)
+    @JsonView(View.AdditionalInfo.class)
     @Schema(hidden = true)
     private Set<Vote> votes;
 

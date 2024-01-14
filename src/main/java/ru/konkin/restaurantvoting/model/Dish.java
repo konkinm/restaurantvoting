@@ -45,7 +45,7 @@ public class Dish extends BaseEntity implements HasId {
     @Column(name = "local_date", nullable = false, columnDefinition = "date default curdate()")
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @JsonView(View.BasicInfo.class)
+    @JsonView(View.AdditionalInfo.class)
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate localDate;
 
@@ -54,7 +54,7 @@ public class Dish extends BaseEntity implements HasId {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     @JsonBackReference
-    @JsonView(View.RestaurantInfo.class)
+    @JsonView(View.AdditionalInfo.class)
     @Schema(hidden = true)
     private Restaurant restaurant;
 

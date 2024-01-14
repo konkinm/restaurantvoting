@@ -26,13 +26,13 @@ public class Restaurant extends NamedEntity implements HasId {
     @OrderBy("description ASC")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @JsonManagedReference
-    @JsonView(View.MenuInfo.class)
+    @JsonView(View.AdditionalInfo.class)
     private List<Dish> menu;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @Column(name = "vote")
     @OrderBy("voteDate DESC")
-    @JsonView(View.VoteInfo.class)
+    @JsonView(View.AdditionalInfo.class)
     @Schema(hidden = true)
     private Set<Vote> votes;
 }
