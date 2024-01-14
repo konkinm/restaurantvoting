@@ -50,7 +50,6 @@ public class VoteController {
     }
 
     @PutMapping
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
     @JsonView(View.BasicInfo.class)
     public ResponseEntity<?> vote(@RequestParam int restaurantId, @AuthenticationPrincipal AuthUser authUser) {

@@ -32,7 +32,6 @@ public class Restaurant extends NamedEntity implements HasId {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     @Column(name = "vote")
     @OrderBy("voteDate DESC")
-    //@JsonManagedReference
     @JsonView(View.VoteInfo.class)
     @Schema(hidden = true)
     private Set<Vote> votes;
