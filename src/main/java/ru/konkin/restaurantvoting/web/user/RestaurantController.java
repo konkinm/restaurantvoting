@@ -27,18 +27,25 @@ public class RestaurantController {
     protected RestaurantRepository restaurantRepository;
 
     @GetMapping
-    public List<RestaurantTo> getAllWithVotesCounter() {
-        log.info("get all with votes counter");
+    @JsonView(View.BasicInfo.class)
+    public List<Restaurant> getAll() {
+        log.info("get all");
+        return restaurantRepository.findAll();
+    }
+
+    @GetMapping("/top-voted")
+    public List<RestaurantTo> getTopVoted() {
+        log.info("get top voted");
         return restaurantRepository.getAllWithTodayVotes().stream()
                 .map(r -> new RestaurantTo(r.getId(), r.getName(), r.getVotes().size()))
-                .sorted(Comparator.comparing(RestaurantTo::getTodayVotesCounter).reversed())
+                .sorted(Comparator.comparing(RestaurantTo::getTodayVotes).reversed())
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    @JsonView(View.MenuInfo.class)
-    public Restaurant getWithTodayMenu(@PathVariable int id) {
-        log.info("get with today's menu for the restaurant with id={}", id);
-        return restaurantRepository.getExistedWithTodayMenu(id);
+    @JsonView(View.BasicInfo.class)
+    public Restaurant get(@PathVariable int id) {
+        log.info("get the restaurant with id={}", id);
+        return restaurantRepository.getExisted(id);
     }
 }
