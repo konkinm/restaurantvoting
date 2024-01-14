@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.model.Dish;
@@ -16,7 +17,7 @@ import java.util.List;
 import static ru.konkin.restaurantvoting.web.RestValidation.checkNotFoundWithId;
 
 @RestController
-@RequestMapping(value = MenuController.REST_URL)
+@RequestMapping(value = MenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 public class MenuController {
     static final String REST_URL = "api/restaurants";
