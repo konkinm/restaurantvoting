@@ -10,10 +10,10 @@ import ru.konkin.restaurantvoting.View;
 public class RestaurantTo extends NamedTo {
 
     @JsonView(View.BasicInfo.class)
-    long todayVotesCounter;
+    long todayVotes;
 
-    public RestaurantTo(int id, String name, long todayVotesCounter) {
+    public RestaurantTo(int id, String name, long todayVotes) {
         super(id, name);
-        this.todayVotesCounter = todayVotesCounter;
+        this.todayVotes = todayVotes;
     }
 }
