@@ -1,4 +1,4 @@
-package ru.konkin.restaurantvoting.web.admin;
+package ru.konkin.restaurantvoting.web.user.admin;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
