@@ -20,7 +20,7 @@ import static ru.konkin.restaurantvoting.web.RestValidation.checkNotFoundWithId;
 @RequestMapping(value = MenuController.REST_URL)
 @Slf4j
 public class MenuController {
-    static final String REST_URL = "api/profile/restaurants";
+    static final String REST_URL = "api/restaurants";
 
     @Autowired
     protected DishRepository dishRepository;
