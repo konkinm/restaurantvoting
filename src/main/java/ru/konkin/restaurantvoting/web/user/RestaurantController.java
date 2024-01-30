@@ -11,11 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.model.Restaurant;
 import ru.konkin.restaurantvoting.repository.RestaurantRepository;
-import ru.konkin.restaurantvoting.to.RestaurantTo;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = RestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -31,15 +28,6 @@ public class RestaurantController {
     public List<Restaurant> getAll() {
         log.info("get all");
         return restaurantRepository.findAll();
-    }
-
-    @GetMapping("/top-voted")
-    public List<RestaurantTo> getTopVoted() {
-        log.info("get top voted");
-        return restaurantRepository.getAllWithTodayVotes().stream()
-                .map(r -> new RestaurantTo(r.getId(), r.getName(), r.getVotes().size()))
-                .sorted(Comparator.comparing(RestaurantTo::getTodayVotes).reversed())
-                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
