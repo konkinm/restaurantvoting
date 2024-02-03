@@ -24,7 +24,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames =
-        {"description", "restaurant_id", "local_date"}, name = "dish_unique_idx")})
+        {"restaurant_id", "local_date", "description"}, name = "dish_unique_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,12 +37,12 @@ public class Dish extends BaseEntity implements HasId {
     @JsonView(View.BasicInfo.class)
     private String description;
 
-    @Column(name = "price", nullable = false, columnDefinition = "int default 0")
+    @Column(name = "price", nullable = false)
     @Range(min = 0, max = 1000000)
     @JsonView(View.BasicInfo.class)
     private int price;
 
-    @Column(name = "local_date", nullable = false, columnDefinition = "date default curdate()")
+    @Column(name = "local_date", nullable = false)
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonView(View.AdditionalInfo.class)
