@@ -35,7 +35,7 @@ public class MenuController {
                                             iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.info("get menu for restaurant with id={} for date {}", restaurantId, date);
         checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);
-        return dishRepository.getMenuByDate(restaurantId, date == null ? LocalDate.now() : date);
+        return dishRepository.getByDate(restaurantId, date == null ? LocalDate.now() : date);
     }
 
     @GetMapping("/{restaurantId}/menu/{id}")

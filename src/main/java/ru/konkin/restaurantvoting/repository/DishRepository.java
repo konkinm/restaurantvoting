@@ -14,16 +14,16 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface DishRepository extends BaseRepository<Dish> {
-    @Query("SELECT d FROM Dish d WHERE d.restaurant.id=?1 AND d.localDate =?2 ORDER BY d.description ASC")
-    List<Dish> getMenuByDate(int restaurantId, LocalDate date);
-
     @Query("SELECT d FROM Dish d WHERE d.id = :id AND d.restaurant.id = :restaurantId")
-    Optional<Dish> getRestaurantDish(int id, int restaurantId);
+    Optional<Dish> get(int id, int restaurantId);
 
     default Dish getExistedRestaurantDish(int id, int restaurantId) {
-        return getRestaurantDish(id, restaurantId).orElseThrow(() ->
+        return get(id, restaurantId).orElseThrow(() ->
                 new NotFoundException("Dish with id=" + id + " for restaurant with id=" + restaurantId + " not found"));
     }
+
+    @Query("SELECT d FROM Dish d WHERE d.restaurant.id=?1 AND d.localDate =?2 ORDER BY d.description ASC")
+    List<Dish> getByDate(int restaurantId, LocalDate date);
 
     @EntityGraph(attributePaths = {"restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT d FROM Dish d WHERE d.id=?1")
