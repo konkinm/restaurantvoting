@@ -1,4 +1,4 @@
-package ru.konkin.restaurantvoting.web.user.admin;
+package ru.konkin.restaurantvoting.web.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import ru.konkin.restaurantvoting.model.Role;
 import ru.konkin.restaurantvoting.model.User;
 import ru.konkin.restaurantvoting.repository.UserRepository;
 import ru.konkin.restaurantvoting.web.AbstractControllerTest;
+import ru.konkin.restaurantvoting.web.user.AdminUserController;
 import ru.konkin.restaurantvoting.web.user.UniqueMailValidator;
 import ru.konkin.restaurantvoting.web.user.UserTestData;
 

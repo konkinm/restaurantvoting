@@ -1,4 +1,4 @@
-package ru.konkin.restaurantvoting.web.user.admin;
+package ru.konkin.restaurantvoting.web.user;
 
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.konkin.restaurantvoting.model.User;
-import ru.konkin.restaurantvoting.web.user.AbstractUserController;
 
 import java.net.URI;
 import java.util.List;

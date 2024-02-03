@@ -1,4 +1,4 @@
-package ru.konkin.restaurantvoting.web.user.admin;
+package ru.konkin.restaurantvoting.web.restaurant;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.model.Restaurant;
-import ru.konkin.restaurantvoting.web.user.RestaurantController;
 
 import java.net.URI;
 

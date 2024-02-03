@@ -1,4 +1,4 @@
-package ru.konkin.restaurantvoting.web.user;
+package ru.konkin.restaurantvoting.web.restaurant;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
