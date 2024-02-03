@@ -67,7 +67,7 @@ public class VoteController {
             created = voteRepository.save(created);
             return ResponseEntity.created(
                             ServletUriComponentsBuilder.fromCurrentContextPath()
-                                    .path(REST_URL).build().toUri())
+                                    .path(REST_URL + "/last").build().toUri())
                     .body(VoteUtil.getTo(created));
         } else {
             throw new IllegalRequestDataException("Today's vote already exists");
