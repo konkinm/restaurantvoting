@@ -1,6 +1,5 @@
 package ru.konkin.restaurantvoting.web.user;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.konkin.restaurantvoting.View;
 import ru.konkin.restaurantvoting.error.IllegalRequestDataException;
 import ru.konkin.restaurantvoting.model.Restaurant;
 import ru.konkin.restaurantvoting.model.User;
@@ -18,14 +16,15 @@ import ru.konkin.restaurantvoting.model.Vote;
 import ru.konkin.restaurantvoting.repository.RestaurantRepository;
 import ru.konkin.restaurantvoting.repository.VoteRepository;
 import ru.konkin.restaurantvoting.to.VoteTo;
+import ru.konkin.restaurantvoting.util.VoteUtil;
 import ru.konkin.restaurantvoting.web.AuthUser;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static ru.konkin.restaurantvoting.web.RestValidation.assureIdConsistent;
 import static ru.konkin.restaurantvoting.web.RestValidation.checkNew;
 
 @RestController
@@ -43,36 +42,33 @@ public class VoteController {
     private RestaurantRepository restaurantRepository;
 
     @GetMapping
-    @JsonView(View.BasicInfo.class)
-    public List<Vote> getAll(@AuthenticationPrincipal AuthUser authUser) {
+    public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get votes history for {}", authUser);
-        return voteRepository.getHistory(authUser.id());
+        return VoteUtil.getTos(voteRepository.getHistory(authUser.id()));
     }
 
     @GetMapping("/last")
-    @JsonView(View.BasicInfo.class)
-    public Optional<Vote> getLast(@AuthenticationPrincipal AuthUser authUser) {
+    public Optional<VoteTo> getLast(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get today's vote for {}", authUser);
-        return voteRepository.getLast(authUser.id());
+        return voteRepository.getByDate(authUser.id(), LocalDate.now()).map(VoteUtil::getTo);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    @JsonView(View.BasicInfo.class)
     public ResponseEntity<?> createLast(@Valid @RequestBody VoteTo voteTo,
                                         @AuthenticationPrincipal AuthUser authUser) {
         log.info("{} creates vote for restaurant with id={}", authUser, voteTo.getRestaurantId());
         checkNew(voteTo);
         User user = authUser.getUser();
         Restaurant restaurant = restaurantRepository.getExisted(voteTo.getRestaurantId());
-        Optional<Vote> vote = voteRepository.getLast(authUser.id());
+        Optional<Vote> vote = voteRepository.getByDate(authUser.id(), LocalDate.now());
         if (vote.isEmpty()) {
             Vote created = new Vote(user, restaurant);
             created = voteRepository.save(created);
             return ResponseEntity.created(
                             ServletUriComponentsBuilder.fromCurrentContextPath()
                                     .path(REST_URL).build().toUri())
-                    .body(created);
+                    .body(VoteUtil.getTo(created));
         } else {
             throw new IllegalRequestDataException("Today's vote already exists");
         }
@@ -80,13 +76,12 @@ public class VoteController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    @JsonView(View.BasicInfo.class)
     public ResponseEntity<?> updateLast(@Valid @RequestBody VoteTo voteTo,
                                         @AuthenticationPrincipal AuthUser authUser) {
         log.info("{} updates last vote for restaurant with id={}", authUser, voteTo.getRestaurantId());
         if (LocalTime.now().isBefore(VOTE_TIME_LIMIT)) {
             Restaurant restaurant = restaurantRepository.getExisted(voteTo.getRestaurantId());
-            Vote vote = voteRepository.getExistedLast(authUser.id());
+            Vote vote = voteRepository.getExistedByDate(authUser.id(), LocalDate.now());
             if (!Objects.equals(vote.getRestaurant().getId(), restaurant.getId())) {
                 vote.setRestaurant(restaurant);
                 voteRepository.save(vote);

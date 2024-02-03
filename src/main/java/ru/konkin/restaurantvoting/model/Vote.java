@@ -9,30 +9,28 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 import ru.konkin.restaurantvoting.View;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames =
-        {"user_id", "restaurant_id", "vote_date"}, name = "vote_unique_idx")})
+        {"user_id", "vote_date", "restaurant_id"}, name = "vote_unique_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Vote extends BaseEntity {
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     @Schema(hidden = true)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     @JsonView(View.BasicInfo.class)
     private Restaurant restaurant;
 
     @Column(name = "vote_date", columnDefinition = "date default curdate()")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonFormat(pattern="yyyy-MM-dd")
     @JsonView(View.BasicInfo.class)
