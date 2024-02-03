@@ -33,7 +33,7 @@ import static ru.konkin.restaurantvoting.web.RestValidation.checkNew;
 public class VoteController {
     static final String REST_URL = "/api/profile/votes";
 
-    private static final LocalTime VOTE_TIME_LIMIT = LocalTime.of(14, 0);
+    private static final LocalTime VOTE_TIME_LIMIT = LocalTime.of(11, 0);
 
     @Autowired
     private VoteRepository voteRepository;
