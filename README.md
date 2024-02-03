@@ -1,4 +1,4 @@
-# Graduation project TopJava internship
+# Restaurant voting application
 ## Technical requirements
 
 Design and implement a REST API using Spring-Boot/Spring Data JPA **without frontend**.
