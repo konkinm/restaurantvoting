@@ -55,7 +55,7 @@ public class VoteController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<?> createLast(@Valid @RequestBody VoteTo voteTo,
+    public ResponseEntity<VoteTo> createLast(@Valid @RequestBody VoteTo voteTo,
                                         @AuthenticationPrincipal AuthUser authUser) {
         log.info("{} creates vote for restaurant with id={}", authUser, voteTo.getRestaurantId());
         checkNew(voteTo);
