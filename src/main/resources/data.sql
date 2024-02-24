@@ -12,11 +12,21 @@ INSERT INTO RESTAURANT (name)
 VALUES ('Khedi'),
        ('Khachapuri House');
 
-INSERT INTO DISH (description, price, local_date, restaurant_id)
-VALUES ('Khachapuri', 500, curdate(), 2),
-       ('Adjapsandali', 1800, curdate(), 1),
-       ('Hinkali', 1500, '2024-01-11', 2),
-       ('Pkhali', 1600, '2024-01-11', 1);
+INSERT INTO MENU (menu_date, restaurant_id)
+VALUES ('2024-01-11', 1),
+       (curdate(), 1),
+       ('2024-01-11', 2),
+       (curdate(), 2);
+
+INSERT INTO DISH (description, price, menu_id)
+VALUES ('Khachapuri', 500, 1),
+       ('Adjapsandali', 1800, 2),
+       ('Hinkali', 1500,  3),
+       ('Pkhali', 1600, 4),
+       ('Tea', 500, 1),
+       ('Coffee', 700, 2),
+       ('Beer', 600, 3),
+       ('Mineral water', 350, 4);
 
 INSERT INTO VOTE (user_id, restaurant_id, vote_date)
 VALUES (1, 1, curdate()),

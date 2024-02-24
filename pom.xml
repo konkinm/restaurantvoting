@@ -8,12 +8,12 @@
         <version>3.2.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>ru.konkin</groupId>
+    <groupId>space.maxkonkin</groupId>
     <artifactId>restaurantvoting</artifactId>
     <version>1.0</version>
     <name>Restaurant Voting App</name>
-    <description>Spring Boot 3.x TopJava graduation application</description>
-    <url>https://github.com/JavaOPs/topjava/blob/master/graduation.md</url>
+    <description>Spring Boot 3.2 voting system for deciding where to have lunch</description>
+    <url>https://github.com/konkinm/restaurantvoting/blob/master/README.md</url>
 
     <properties>
         <java.version>21</java.version>
