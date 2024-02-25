@@ -35,8 +35,8 @@ public class MenuController {
 
     @GetMapping("/{restaurantId}/menus/by-date")
     public MenuTo getByDate(@PathVariable int restaurantId,
-                                   @RequestParam @DateTimeFormat(
-                                           iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+                            @RequestParam @DateTimeFormat(
+                                    iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         log.info("get menu for restaurant with id={} for date {}", restaurantId, date);
         RestValidation.checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);
         return MenuUtil.getTo(menuRepository.getExistedByDateWithDishes(restaurantId, date));

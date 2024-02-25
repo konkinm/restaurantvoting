@@ -15,7 +15,7 @@ public class VoteTo extends BaseTo {
     Integer restaurantId;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate voteDate;
 
     public VoteTo(Integer id, Integer restaurantId, LocalDate voteDate) {

@@ -34,10 +34,16 @@ public class RestaurantController {
     protected VoteRepository voteRepository;
 
     @GetMapping
-    public List<RestaurantTo> getAll() {
-        log.info("get all");
-        return RestaurantUtil.getTos(restaurantRepository.findAll());
-    }
+    public List<RestaurantTo> getAllWithTodayVotesAndMenu() {
+        log.info("get all with today's votes and menu");
+        List<RestaurantTo> tos = RestaurantUtil.getTos(restaurantRepository.findAll());
+        tos.forEach(to -> {
+            to.setTodayMenu(MenuUtil.getTo(menuRepository
+                    .getExistedByDateWithDishes(to.getId(), LocalDate.now())));
+            to.setTodayVotes(voteRepository.getCountByDate(to.getId(), LocalDate.now()));
+        });
+        return tos;
+    } // not solving N+1 problem TODO: replace with minimal amount of JPQL queries in RestaurantRepository
 
     @GetMapping("/{id}")
     public RestaurantTo getToday(@PathVariable int id) {

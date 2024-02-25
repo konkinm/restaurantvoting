@@ -13,6 +13,7 @@ public class RestaurantUtil {
     public static Restaurant fromTo(RestaurantTo to) {
         return new Restaurant(to.getId(), to.getName());
     }
+
     public static RestaurantTo getTo(Restaurant restaurant) {
         return new RestaurantTo(restaurant.getId(), restaurant.getName(), null, null);
     }
