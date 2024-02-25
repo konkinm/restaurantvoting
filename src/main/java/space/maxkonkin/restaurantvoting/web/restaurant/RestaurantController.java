@@ -38,8 +38,8 @@ public class RestaurantController {
         log.info("get all with today's votes and menu");
         List<RestaurantTo> tos = RestaurantUtil.getTos(restaurantRepository.findAll());
         tos.forEach(to -> {
-            to.setTodayMenu(MenuUtil.getTo(menuRepository
-                    .getExistedByDateWithDishes(to.getId(), LocalDate.now())));
+            to.setTodayMenu(MenuUtil.getToFromOptional((menuRepository
+                    .getByDateWithDishes(to.getId(), LocalDate.now()))));
             to.setTodayVotes(voteRepository.getCountByDate(to.getId(), LocalDate.now()));
         });
         return tos;

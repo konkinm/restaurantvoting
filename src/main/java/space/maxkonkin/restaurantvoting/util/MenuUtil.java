@@ -6,6 +6,7 @@ import space.maxkonkin.restaurantvoting.model.Menu;
 import space.maxkonkin.restaurantvoting.to.MenuTo;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -17,6 +18,10 @@ public class MenuUtil {
     public static MenuTo getTo(Menu menu) {
         return new MenuTo(menu.getId(), menu.getMenuDate(), menu.getRestaurant().getId(),
                 DishUtil.makeTos(menu.getDishes()));
+    }
+
+    public static MenuTo getToFromOptional(Optional<Menu> menu) {
+        return menu.map(MenuUtil::getTo).orElse(null);
     }
 
     public static MenuTo getTo(Menu menu, int restaurantId) {
