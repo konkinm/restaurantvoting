@@ -2,6 +2,7 @@ package space.maxkonkin.restaurantvoting.web.restaurant;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class RestaurantController {
     protected VoteRepository voteRepository;
 
     @GetMapping
+    @Cacheable("restaurants")
     public List<RestaurantTo> getAllWithTodayVotesAndMenu() {
         log.info("get all with today's votes and menu");
         List<RestaurantTo> tos = RestaurantUtil.getTos(restaurantRepository.findAll());
@@ -46,6 +48,7 @@ public class RestaurantController {
     } // not solving N+1 problem TODO: replace with minimal amount of JPQL queries in RestaurantRepository
 
     @GetMapping("/{id}")
+    @Cacheable("restaurants")
     public RestaurantTo getToday(@PathVariable int id) {
         log.info("get the restaurant with id={}", id);
         long todayVotes = voteRepository.getCountByDate(id, LocalDate.now());

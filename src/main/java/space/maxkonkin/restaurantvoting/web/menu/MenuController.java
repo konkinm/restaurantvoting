@@ -2,6 +2,7 @@ package space.maxkonkin.restaurantvoting.web.menu;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class MenuController {
     protected RestaurantRepository restaurantRepository;
 
     @GetMapping("/{restaurantId}/menus")
+    @Cacheable("menus")
     public List<MenuTo> getAll(@PathVariable int restaurantId) {
         log.info("get menus for restaurant with id={}", restaurantId);
         RestValidation.checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);
@@ -34,6 +36,7 @@ public class MenuController {
     }
 
     @GetMapping("/{restaurantId}/menus/by-date")
+    @Cacheable("menus")
     public MenuTo getByDate(@PathVariable int restaurantId,
                             @RequestParam @DateTimeFormat(
                                     iso = DateTimeFormat.ISO.DATE) LocalDate date) {
@@ -43,6 +46,7 @@ public class MenuController {
     }
 
     @GetMapping("/{restaurantId}/menus/{id}")
+    @Cacheable("menus")
     public MenuTo get(@PathVariable("id") int id, @PathVariable("restaurantId") int restaurantId) {
         log.info("get {} restaurant with id={}", id, restaurantId);
         RestValidation.checkNotFoundWithId(restaurantRepository.existsById(restaurantId), restaurantId);

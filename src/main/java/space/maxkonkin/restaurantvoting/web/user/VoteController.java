@@ -3,6 +3,8 @@ package space.maxkonkin.restaurantvoting.web.user;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,12 +42,14 @@ public class VoteController {
     private RestaurantRepository restaurantRepository;
 
     @GetMapping
+    @Cacheable("votes")
     public List<VoteTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get votes history for {}", authUser);
         return VoteUtil.getTos(voteRepository.getHistory(authUser.id()));
     }
 
     @GetMapping("/today")
+    @Cacheable("votes")
     public Optional<VoteTo> getToday(@AuthenticationPrincipal AuthUser authUser) {
         log.info("get today's vote for {}", authUser);
         return voteRepository.getByDate(authUser.id(), LocalDate.now()).map(VoteUtil::getTo);
@@ -53,6 +57,7 @@ public class VoteController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
+    @CacheEvict(value = "votes", allEntries = true)
     public ResponseEntity<VoteTo> createLast(@Valid @RequestBody VoteTo voteTo,
                                              @AuthenticationPrincipal AuthUser authUser) {
         log.info("{} creates vote for restaurant with id={}", authUser, voteTo.getRestaurantId());
@@ -74,6 +79,7 @@ public class VoteController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
+    @CacheEvict(value = "votes", allEntries = true)
     public ResponseEntity<?> updateLast(@Valid @RequestBody VoteTo voteTo,
                                         @AuthenticationPrincipal AuthUser authUser) {
         log.info("{} updates last vote for restaurant with id={}", authUser, voteTo.getRestaurantId());

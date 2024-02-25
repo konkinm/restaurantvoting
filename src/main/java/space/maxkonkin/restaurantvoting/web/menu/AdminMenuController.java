@@ -3,6 +3,7 @@ package space.maxkonkin.restaurantvoting.web.menu;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class AdminMenuController extends MenuController {
 
     @PostMapping(path = "/{restaurantId}/menus", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
+    @CacheEvict(value = "menus", allEntries = true)
     public ResponseEntity<MenuTo> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restaurantId) {
         log.info("create {}", menuTo);
         RestValidation.checkNew(menuTo);
@@ -50,6 +52,7 @@ public class AdminMenuController extends MenuController {
     @PutMapping(value = "/{restaurantId}/menus/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @CacheEvict(value = "menus", allEntries = true)
     public void update(@Valid @RequestBody MenuTo menuTo,
                        @PathVariable("id") int id,
                        @PathVariable("restaurantId") int restaurantId) {
@@ -72,6 +75,7 @@ public class AdminMenuController extends MenuController {
 
     @DeleteMapping("/{restaurantId}/menus/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "menus", allEntries = true)
     public void delete(@PathVariable("id") int id, @PathVariable("restaurantId") int restaurantId) {
         log.info("delete menu with id={} for restaurant with id={}", id, restaurantId);
         MenuUtil.checkMenuBelongsToRestaurant(menuRepository.getExistedWithDishesAndRestaurant(id, restaurantId), restaurantId);

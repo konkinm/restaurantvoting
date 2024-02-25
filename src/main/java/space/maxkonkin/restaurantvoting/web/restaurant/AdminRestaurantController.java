@@ -2,6 +2,7 @@ package space.maxkonkin.restaurantvoting.web.restaurant;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class AdminRestaurantController extends RestaurantController {
     static final String REST_URL = "/api/admin/restaurants";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CacheEvict(value = "restaurants", allEntries = true)
     public ResponseEntity<RestaurantTo> createWithLocation(@Valid @RequestBody RestaurantTo restaurantTo) {
         log.info("create {}", restaurantTo);
         RestValidation.checkNew(restaurantTo);
@@ -32,6 +34,7 @@ public class AdminRestaurantController extends RestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void update(@Valid @RequestBody RestaurantTo restaurantTo, @PathVariable int id) {
         log.info("update {} with id={}", restaurantTo, id);
         RestValidation.assureIdConsistent(restaurantTo, id);
@@ -40,6 +43,7 @@ public class AdminRestaurantController extends RestaurantController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(@PathVariable int id) {
         log.info("delete {}", id);
         restaurantRepository.deleteExisted(id);
