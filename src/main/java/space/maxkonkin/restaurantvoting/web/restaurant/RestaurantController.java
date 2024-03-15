@@ -27,10 +27,8 @@ public class RestaurantController {
 
     @Autowired
     protected RestaurantRepository restaurantRepository;
-
     @Autowired
     protected MenuRepository menuRepository;
-
     @Autowired
     protected VoteRepository voteRepository;
 

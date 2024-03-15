@@ -1,21 +1,32 @@
 package space.maxkonkin.restaurantvoting.to;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import space.maxkonkin.restaurantvoting.HasId;
 
-@NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Data
+@Setter
+@Getter
+@EqualsAndHashCode
 public abstract class BaseTo implements HasId {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY) // https://stackoverflow.com/a/28025008/548473
     protected Integer id;
+
+    protected BaseTo(Integer id) {
+        this.id = id;
+    }
+
+    public BaseTo() {
+    }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + ":" + id;
     }
+
+    protected boolean canEqual(final Object other) {
+        return other instanceof BaseTo;
+    }
+
 }

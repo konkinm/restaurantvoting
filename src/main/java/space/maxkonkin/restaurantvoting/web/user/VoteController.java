@@ -33,7 +33,7 @@ import java.util.Optional;
 public class VoteController {
     static final String REST_URL = "/api/profile/votes";
 
-    private static final LocalTime VOTE_TIME_LIMIT = LocalTime.of(11, 0);
+    private static final LocalTime VOTE_TIME_LIMIT = LocalTime.of(23, 59);
 
     @Autowired
     private VoteRepository voteRepository;

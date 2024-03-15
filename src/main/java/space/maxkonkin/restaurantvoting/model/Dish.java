@@ -39,6 +39,12 @@ public class Dish extends BaseEntity implements HasId {
     @Schema(hidden = true)
     private Menu menu;
 
+    public Dish(Integer id, String description, int price) {
+        super(id);
+        this.description = description;
+        this.price = price;
+    }
+
     public Dish(String description, int price) {
         this.description = description;
         this.price = price;

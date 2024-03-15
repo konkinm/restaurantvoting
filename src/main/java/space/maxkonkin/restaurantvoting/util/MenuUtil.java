@@ -33,6 +33,10 @@ public class MenuUtil {
         return menus.stream().map(MenuUtil::getTo).collect(Collectors.toList());
     }
 
+    public static List<MenuTo> getTos(List<Menu> menus, int restaurantId) {
+        return menus.stream().map(m -> getTo(m, restaurantId)).collect(Collectors.toList());
+    }
+
     public static void checkMenuBelongsToRestaurant(Menu menu, int restaurantId) {
         if (menu.getRestaurant().getId() != restaurantId) {
             throw new NotFoundException(String.format(
@@ -40,6 +44,4 @@ public class MenuUtil {
                     menu.getId(), restaurantId));
         }
     }
-
-
 }

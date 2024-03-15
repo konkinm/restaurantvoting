@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Factory for creating test matchers.
  * <p>
  * Comparing actual and expected objects via AssertJ
- * Support converting json MvcResult to objects for comparation.
+ * Support converting json MvcResult to objects for comparing.
  */
 public class MatcherFactory {
 
@@ -74,6 +74,10 @@ public class MatcherFactory {
 
         public T readFromJson(ResultActions action) throws UnsupportedEncodingException {
             return JsonUtil.readValue(getContent(action.andReturn()), clazz);
+        }
+
+        public List<T> readListFromJson(ResultActions action) throws UnsupportedEncodingException {
+            return JsonUtil.readValues(getContent(action.andReturn()), clazz);
         }
 
         private static String getContent(MvcResult result) throws UnsupportedEncodingException {

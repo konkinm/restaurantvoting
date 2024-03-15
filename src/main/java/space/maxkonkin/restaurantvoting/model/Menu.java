@@ -36,4 +36,10 @@ public class Menu extends BaseEntity implements HasId {
         super(id);
         this.menuDate = menuDate;
     }
+
+    public Menu(Integer id, LocalDate menuDate, List<Dish> dishes) {
+        super(id);
+        this.menuDate = menuDate;
+        this.dishes = dishes;
+    }
 }

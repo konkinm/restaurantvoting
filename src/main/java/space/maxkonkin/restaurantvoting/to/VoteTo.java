@@ -4,18 +4,23 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
-import lombok.Value;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Value
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
-public class VoteTo extends BaseTo {
+public final class VoteTo extends BaseTo {
     @NotNull
+    @NotNull
+    private final
     Integer restaurantId;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @JsonFormat(pattern = "yyyy-MM-dd")
+    private final
     LocalDate voteDate;
 
     public VoteTo(Integer id, Integer restaurantId, LocalDate voteDate) {

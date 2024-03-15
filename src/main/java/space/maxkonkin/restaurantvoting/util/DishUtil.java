@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class DishUtil {
     public static Dish fromTo(DishTo to) {
-        return new Dish(to.getDescription(), to.getPrice());
+        return new Dish(to.getId(), to.getDescription(), to.getPrice());
     }
 
     public static DishTo makeTo(Dish dish) {

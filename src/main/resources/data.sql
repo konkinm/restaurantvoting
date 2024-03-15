@@ -29,5 +29,6 @@ VALUES ('Khachapuri', 500, 1),
        ('Mineral water', 350, 4);
 
 INSERT INTO VOTE (user_id, restaurant_id, vote_date)
-VALUES (1, 1, curdate()),
+VALUES (2, 1, curdate()),
+       (1, 1, '2024-03-10'),
        (2, 2, '2024-01-12');
