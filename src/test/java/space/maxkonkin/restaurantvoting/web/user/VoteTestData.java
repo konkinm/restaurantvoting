@@ -13,8 +13,10 @@ public class VoteTestData {
 
     public static final int TODAY_ADMIN_VOTE_ID = 1;
     private static final int USER_VOTE_ID = 2;
+    public static final int ADMIN_VOTE_ID = 3;
 
     public static final VoteTo todayAdminVote = new VoteTo(TODAY_ADMIN_VOTE_ID, 1, LocalDate.now());
+    public static final VoteTo adminVote = new VoteTo(ADMIN_VOTE_ID, 2, LocalDate.of(2024, 1, 12));
     public static final VoteTo userVote = new VoteTo(USER_VOTE_ID, 1, LocalDate.of(2024, 3, 10));
 
     public static Vote getNew() {

@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 public final class VoteTo extends BaseTo {
     @NotNull
-    @NotNull
     private final
     Integer restaurantId;
 

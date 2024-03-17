@@ -1,5 +1,6 @@
 package space.maxkonkin.restaurantvoting.web.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,12 @@ import space.maxkonkin.restaurantvoting.model.Vote;
 import space.maxkonkin.restaurantvoting.repository.RestaurantRepository;
 import space.maxkonkin.restaurantvoting.repository.VoteRepository;
 import space.maxkonkin.restaurantvoting.to.VoteTo;
+import space.maxkonkin.restaurantvoting.util.ClockUtil;
 import space.maxkonkin.restaurantvoting.util.VoteUtil;
 import space.maxkonkin.restaurantvoting.web.AuthUser;
 import space.maxkonkin.restaurantvoting.web.RestValidation;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -33,7 +36,7 @@ import java.util.Optional;
 public class VoteController {
     static final String REST_URL = "/api/profile/votes";
 
-    private static final LocalTime VOTE_TIME_LIMIT = LocalTime.of(23, 59);
+    private static final LocalTime VOTE_TIME_LIMIT = LocalTime.of(11, 0);
 
     @Autowired
     private VoteRepository voteRepository;
@@ -83,7 +86,7 @@ public class VoteController {
     public ResponseEntity<?> updateLast(@Valid @RequestBody VoteTo voteTo,
                                         @AuthenticationPrincipal AuthUser authUser) {
         log.info("{} updates last vote for restaurant with id={}", authUser, voteTo.getRestaurantId());
-        if (LocalTime.now().isBefore(VOTE_TIME_LIMIT)) {
+        if (LocalTime.now(ClockUtil.getClock()).isBefore(VOTE_TIME_LIMIT)) {
             Restaurant restaurant = restaurantRepository.getExisted(voteTo.getRestaurantId());
             Optional<Vote> vote = voteRepository.getByDate(authUser.id(), LocalDate.now());
             if (vote.isPresent() && !Objects.equals(vote.get().getRestaurant().getId(), restaurant.getId())) {
